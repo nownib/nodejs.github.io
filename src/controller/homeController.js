@@ -5,12 +5,12 @@ const handleHelloword = (req, res) => {
     return res.render("home.ejs");
 }
 
-const handleUserPage = (req, res) => {
-    let userList = userService.getUserList();
+const handleUserPage = async (req, res) => {
+    let userList = await userService.getUserList();
     //điều hướng đến service để xử lí việc lấy danh sách từ dtb
     
-    // console.log(">>>check user list: ", userList)
-    return res.render("user.ejs");
+
+    return res.render("user.ejs", {userList});
     //Trả về giao diện cho người dùng
 }
 
