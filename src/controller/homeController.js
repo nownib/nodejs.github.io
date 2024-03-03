@@ -6,7 +6,12 @@ const handleHelloword = (req, res) => {
 }
 
 const handleUserPage = (req, res) => {
+    let userList = userService.getUserList();
+    //điều hướng đến service để xử lí việc lấy danh sách từ dtb
+    
+    // console.log(">>>check user list: ", userList)
     return res.render("user.ejs");
+    //Trả về giao diện cho người dùng
 }
 
 const handleCreateNewUser = (req, res) => {
@@ -16,7 +21,7 @@ const handleCreateNewUser = (req, res) => {
 
 
     // userService.createNewUser(email, password, username)
-    userService.getUserList();
+
       
     return res.send("handleCreateNewUser");
 }

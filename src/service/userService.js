@@ -31,17 +31,22 @@ const createNewUser = (email, password, username) => {
     );
 }
 
-const getUserList = ()=> {
+const getUserList = async ()=> {
     let users = [];
-    connection.query(
+    // return connection.query(
+    //     'SELECT * FROM users',
+    //     function (err, results, fields) {
+    //         if(err){
+    //             console.log(err);
+    //             return users;
+    //         }
+    //         users = results;
+    //         return users;
+    //     }
+    // );
+    const [rows, fields] = await connection.execute(
         'SELECT * FROM users',
-        function (err, results, fields) {
-            if(err){
-                console.log(err)
-            }
-            console.log(">>>check results", results)
-        }
-    );
+      );
 }
 
 module.exports = {
