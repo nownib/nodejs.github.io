@@ -45,7 +45,7 @@
                 <table class="table table-hover table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col">ID</th>
                             <th scope="col">Email</th>
                             <th scope="col">Username</th>
                             <th>Actions</th>
@@ -54,12 +54,24 @@
                     <tbody>
                         <% userList.forEach(function(item, index){ %>
                             <tr>
-                                <th scope="row"><%= index + 1 %></th>
-                                <td><%= item.email %></td>
-                                <td><%= item.username %></td>
+                                <th scope="row">
+                                    <%= index + 1 %>
+                                </th>
                                 <td>
-                                    <button class="btn btn-warning">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
+                                    <%= item.email %>
+                                </td>
+                                <td>
+                                    <%= item.username %>
+                                </td>
+                                <td>
+                                    <button class="btn btn-warning">
+                                        Edit
+                                    </button>
+                                    <form style="display: inline;" action="/delete-user/<%= item.id %>" method="POST">
+                                        <button class="btn btn-danger" type="submit">
+                                            Delete
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                             <% }); %>
