@@ -26,13 +26,13 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "sequelize": "^6.6.2"
+    "sequelize": "6.13.0"
   },
   "devDependencies": {
     "@babel/core": "7.15.4",
     "@babel/node": "7.15.4",
     "@babel/preset-env": "7.15.4",
     "nodemon": "2.0.15",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "6.3.0"
   }
 }
