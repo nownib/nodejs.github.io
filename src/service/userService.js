@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import mysql from 'mysql2/promise';
 import bluebird from 'bluebird';
-
+import db from '../models/index';
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -13,17 +13,13 @@ const hashUserPassword = (userPassword)=> {
 
 const createNewUser = async (email, password, username) => {
     let hashPass = hashUserPassword(password);
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        database: 'jwt',
-        Promise: bluebird,
-      });
-
     try{
-        const [rows, fields] = await connection.execute(
-            'INSERT INTO users (email, password, username) VALUES (?, ?, ?)',[email, hashPass, username]);
-        return rows;
+        await db.User.create({
+            username: username,
+            email: email,
+            password: hashPass
+        })
+
     }catch(error) {
         console.log(">>>check error", error)
     }
@@ -36,9 +32,9 @@ const getUserList = async ()=> {
         database: 'jwt',
         Promise: bluebird,
       });
-    let users = [];
+    let user = [];
     try{
-        const [rows, fields] = await connection.execute('SELECT * FROM users');
+        const [rows, fields] = await connection.execute('SELECT * FROM user');
         return rows;
     }catch(error) {
         console.log(">>>check error", error)
@@ -52,10 +48,10 @@ const deleteUser = async (id) => {
         database: 'jwt',
         Promise: bluebird,
       });
-    let users = [];
+    let user = [];
     try{
         const [rows, fields] = await connection.execute(
-            'DELETE FROM users WHERE id=?',[id]);
+            'DELETE FROM user WHERE id=?',[id]);
         return rows;
     }catch(error) {
         console.log(">>>check error", error)
@@ -71,7 +67,7 @@ const getUserById = async (id) => {
       });
     try{
         const [rows, fields] = await connection.execute(
-            'SELECT * FROM users WHERE id=?',[id]);
+            'SELECT * FROM user WHERE id=?',[id]);
         return rows;
     }catch(error) {
         console.log(">>>check error", error)
@@ -87,7 +83,7 @@ const updateUserInfo = async (email, username, id) =>{
       });
     try{
         const [rows, fields] = await connection.execute(
-            'UPDATE users SET email=?, username =? WHERE id=?',[email, username, id]);
+            'UPDATE user SET email=?, username =? WHERE id=?',[email, username, id]);
         return rows;
     }catch(error) {
         console.log(">>>check error", error)

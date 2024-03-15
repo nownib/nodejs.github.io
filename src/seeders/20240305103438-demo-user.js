@@ -11,7 +11,7 @@ module.exports = {
      isBetaMember: false
      }], {});
     */
-     await queryInterface.bulkInsert('Users', 
+     await queryInterface.bulkInsert('User', 
      [{
         email: 'John Doe',
         password: '123',
@@ -26,9 +26,6 @@ module.exports = {
         email: 'John Doe',
         password: '123',
         username:'fake3',
-      },
-      define: {
-        freezeTableName: true,
       },
     ], {});
   },
