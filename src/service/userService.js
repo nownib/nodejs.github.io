@@ -14,7 +14,7 @@ const createNewUser = async (email, password, username) => {
   let hashPass = hashUserPassword(password);
   try {
     await db.User.create({
-      username: username,
+      username: username, //dữ liệu trên db : dữ liệu nhập vào
       email: email,
       password: hashPass,
     });
@@ -24,21 +24,21 @@ const createNewUser = async (email, password, username) => {
 };
 
 const getUserList = async () => {
-  let newUser = await db.User.findOne({
-    where: { id: 1},
-    attributes: ["id", "username", "email"],
-    include: {model: db.Group, attributes: ["name", "description"]},
-    raw: true,
-    nest: true
-  })//lấy 1 User thuộc Group có id là 1
+  // let newUser = await db.User.findOne({
+  //   where: { id: 1},
+  //   attributes: ["id", "username", "email"],
+  //   include: {model: db.Group, attributes: ["name", "description"]},
+  //   raw: true,
+  //   nest: true
+  // })//lấy 1 User thuộc Group có id là 1
 
-  let roles = await db.Role.findAll({
-    include: {model: db.Group, where: { id: 1}},
-    raw: true,
-    nest: true
-  });//lấy tất cả Role thuộc Group có id là 1
-  console.log(">>check new user", newUser)
-  console.log(">>>check role", roles)
+  // let roles = await db.Role.findAll({
+  //   include: {model: db.Group, where: { id: 1}},
+  //   raw: true,
+  //   nest: true
+  // });//lấy tất cả Role thuộc Group có id là 1
+  // console.log(">>check new user", newUser)
+  // console.log(">>>check role", roles)
 
 
   let users = [];
@@ -129,3 +129,4 @@ module.exports = {
   getUserById,
   updateUserInfo,
 };
+
