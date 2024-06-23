@@ -27,7 +27,6 @@ const handleRegister = async (req, res) => {
     }
 
     let data = await loginRegisterService.registerNewUser(req.body); //tới đâyyyyy
-
     return res.status(200).json({
       EM: data.EM, //message
       EC: data.EC, //code
