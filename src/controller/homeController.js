@@ -9,7 +9,6 @@ const handleHelloword = (req, res) => {
 const handleUserPage = async (req, res) => {
   let userList = await userService.getUserList();
   //điều hướng đến service để xử lí việc lấy danh sách từ dtb
-
   return res.render("user.ejs", { userList });
   //Trả về giao diện cho người dùng
 };

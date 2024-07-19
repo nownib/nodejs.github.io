@@ -1,11 +1,11 @@
 import loginRegisterService from "../service/loginRegisterService";
 
-const testApi = (req, res) => {
-  return res.status(200).json({
-    message: "ok",
-    data: "test api",
-  });
-};
+// const testApi = (req, res) => {
+//   return res.status(200).json({
+//     message: "ok",
+//     data: "test api",
+//   });
+// };
 
 const handleRegister = async (req, res) => {
   try {
@@ -44,18 +44,43 @@ const handleRegister = async (req, res) => {
 const handleLogin = async (req, res) => {
   try {
     let data = await loginRegisterService.handleUserLogin(req.body);
-
+    if (data && data.DT && data.DT.access_token) {
+      //set cookie
+      res.cookie("jwt", data.DT.access_token, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 1000,
+      });
+    }
     return res.status(200).json({
-        EM: data.EM, //message
-        EC: data.EC, //code
-        DT: data.DT, //data
+      EM: data.EM, //message
+      EC: data.EC, //code
+      DT: data.DT, //data
     });
-  } catch (error) {}
-
-  return res.status(500).json({
-    EM: "error from server", //message
-    EC: "-1", //code
-    DT: "", //data
-  });
+  } catch (error) {
+    console.log("Check err", error);
+    return res.status(500).json({
+      EM: "error from server", //message
+      EC: "-2", //code
+      DT: "", //data
+    });
+  }
 };
-module.exports = { testApi, handleRegister, handleLogin };
+
+const handleLogout = async (req, res) => {
+  try {
+    await res.clearCookie("jwt");
+    return res.status(200).json({
+      EM: "Clear cookie done", //message
+      EC: 0, //code
+      DT: "", //data
+    });
+  } catch (error) {
+    console.log("Check err", error);
+    return res.status(500).json({
+      EM: "error from server", //message
+      EC: "-2", //code
+      DT: "", //data
+    });
+  }
+};
+module.exports = { handleRegister, handleLogin, handleLogout };

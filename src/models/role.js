@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Role extends Model {
     /**
@@ -11,17 +9,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Role.belongsToMany(models.Group, { through: 'Group_Role'});
+      Role.belongsToMany(models.Group, {
+        through: "Group_Role",
+        foreignKey: "roleId",
+      });
     }
-  };
+  }
 
   //ORM
-  Role.init({
-    url: DataTypes.STRING,
-    description: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Role',
-  });
+  Role.init(
+    {
+      url: DataTypes.STRING,
+      description: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "Role",
+      freezeTableName: true,
+    }
+  );
   return Role;
 };

@@ -1,8 +1,11 @@
+require("dotenv").config();
 import { where } from "sequelize/lib/sequelize";
 import db from "../models/index";
 import bcrypt from "bcryptjs";
 import { Op } from "sequelize";
 import { raw } from "body-parser";
+import { getGroupWithRoles } from "./JWTService";
+import { createJWT } from "../middleware/JWTAction";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -57,6 +60,7 @@ const registerNewUser = async (rawUserData) => {
       username: rawUserData.username,
       password: hashPassword,
       phone: rawUserData.phone,
+      groupId: 4,
     });
 
     return {
@@ -66,7 +70,7 @@ const registerNewUser = async (rawUserData) => {
   } catch (e) {
     console.log(e);
     return {
-      EM: "ERRORRRRR",
+      EM: "Error from server",
       EC: -2,
     };
   }
@@ -77,6 +81,7 @@ const checkPassword = (inputPassword, hashPassword) => {
 };
 
 const handleUserLogin = async (rawData) => {
+  
   try {
     // check email/phone exist
     let user = await db.User.findOne({
@@ -86,32 +91,47 @@ const handleUserLogin = async (rawData) => {
     });
 
     if (user) {
-      console.log(">>>found email")
+
       let isCorrectPassword = checkPassword(rawData.password, user.password);
       if (isCorrectPassword === true) {
+        let groupWithRoles = await getGroupWithRoles(user);
+        let payload = {
+          email: user.email,
+          groupWithRoles,
+          username: user.username,
+        };
+        let token = createJWT(payload);
+
         return {
           EM: "OK",
           EC: 0,
-          DT: "",
+          DT: {
+            access_token: token,
+            groupWithRoles,
+            email: user.email,
+            username: user.username,
+          },
         };
       }
     }
-    
-    console.log(">>>not found email", rawData.valueLogin,"check pass", rawData.password);
     return {
       EM: "Email/phone or password incorrect!",
       EC: 1,
       DT: "",
     };
   } catch (error) {
-    console.log(e);
+    console.log(error);
     return {
-      EM: "ERROR",
+      EM: "Error from server",
       EC: -2,
     };
   }
 };
 
-module.exports = { registerNewUser, handleUserLogin, hashUserPassword,
-  checkEmailExist, checkPhoneExist
- };
+module.exports = {
+  registerNewUser,
+  handleUserLogin,
+  hashUserPassword,
+  checkEmailExist,
+  checkPhoneExist,
+};

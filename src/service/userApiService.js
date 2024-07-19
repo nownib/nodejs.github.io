@@ -45,6 +45,8 @@ const getUserWithPagination = async (page, limit) => {
       attributes: ["id", "username", "email", "phone", "sex", "address"],
       include: { model: db.Group, attributes: ["name", "id"] },
       order: [["id", "DESC"]],
+      raw: true,
+      nest: true,
     });
 
     let totalPages = Math.ceil(count / limit);
@@ -113,30 +115,34 @@ const updateUser = async (data) => {
       return {
         EM: "Update error with groupID empty",
         EC: 1,
-        DT: 'group'
+        DT: "group",
       };
     }
-      let user = await db.User.findOne({ where: { id: data.id } });
-      if (user) {
-        await user.update({
-          username: data.username,
-          address: data.address,
-          sex: data.sex,
-          groupId: data.group,
-        });
-        return {
-          EM: "Update user succeeds",
-          EC: 0,
-          DT: 'group'
-        };
-      }else{
-        return {
-          EM: "User not found",
-          EC: 2,
-          DT: ''
-        };
-      }
-   
+    let user = await db.User.findOne({
+      where: { id: data.id },
+      raw: false,
+      nest: false,
+    });
+
+    if (user) {
+      await user.update({
+        username: data.username,
+        address: data.address,
+        sex: data.sex,
+        groupId: data.group,
+      });
+      return {
+        EM: "Update user succeeds",
+        EC: 0,
+        DT: "group",
+      };
+    } else {
+      return {
+        EM: "User not found",
+        EC: 2,
+        DT: "",
+      };
+    }
   } catch (e) {
     console.log(e);
     return {
