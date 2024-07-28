@@ -11,7 +11,7 @@
     "nodejs",
     "jwt"
   ],
-  "author": "HaryPhamDev",
+  "author": "WonBin",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
