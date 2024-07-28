@@ -81,7 +81,6 @@ const checkPassword = (inputPassword, hashPassword) => {
 };
 
 const handleUserLogin = async (rawData) => {
-  
   try {
     // check email/phone exist
     let user = await db.User.findOne({
@@ -91,7 +90,6 @@ const handleUserLogin = async (rawData) => {
     });
 
     if (user) {
-
       let isCorrectPassword = checkPassword(rawData.password, user.password);
       if (isCorrectPassword === true) {
         let groupWithRoles = await getGroupWithRoles(user);
@@ -113,12 +111,12 @@ const handleUserLogin = async (rawData) => {
           },
         };
       }
+      return {
+        EM: "Email/phone or password incorrect!",
+        EC: 1,
+        DT: "",
+      };
     }
-    return {
-      EM: "Email/phone or password incorrect!",
-      EC: 1,
-      DT: "",
-    };
   } catch (error) {
     console.log(error);
     return {

@@ -5,7 +5,7 @@ import allWebRoutes from "./routes/web";
 import bodyParser from "body-parser";
 import initApiRoutes from "./routes/api";
 import configCors from "./config/cors";
-import { createJWT, verifyToken } from "./middleware/JWTAction";
+
 import cookieParser from "cookie-parser";
 import connectDB from "./config/connectDB";
 
