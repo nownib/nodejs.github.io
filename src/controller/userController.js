@@ -85,8 +85,9 @@ const getUserAccount = (req, res) => {
       email: req.user.email,
       username: req.user.username,
     },
-  });//reload
+  }); //reload
 };
+
 module.exports = {
   readFunc,
   createFunc,

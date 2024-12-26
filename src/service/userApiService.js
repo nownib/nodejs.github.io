@@ -1,11 +1,9 @@
-import passport from "passport";
 import db from "../models/index";
 import {
   checkEmailExist,
   checkPhoneExist,
   hashUserPassword,
 } from "./loginRegisterService";
-import { includes } from "lodash";
 
 const getAllUser = async () => {
   try {
@@ -109,7 +107,7 @@ const createNewUser = async (data) => {
   }
 };
 
-const updateUser = async (data) => {
+const updateUser = async (data, userId) => {
   try {
     if (!data.groupId) {
       return {

@@ -19,8 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   //ORM
   Role.init(
     {
-      url: DataTypes.STRING,
-      description: DataTypes.STRING,
+      name: DataTypes.STRING,
     },
     {
       sequelize,

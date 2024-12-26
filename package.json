@@ -4,8 +4,10 @@
   "description": "nodejs server with jwt",
   "main": "server.js",
   "scripts": {
-    "build": "babel src --out-dir dist",
-    "start": "node dist/server.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec babel-node src/server.js",
+    "build-src": "babel src -d build --copy-files",
+    "build": "node build/server.js"
   },
   "keywords": [
     "nodejs",

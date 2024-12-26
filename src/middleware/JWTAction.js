@@ -27,7 +27,8 @@ const verifyToken = (token) => {
   return decoded;
 };
 
-const extractToken = (req) => {//check token header
+const extractToken = (req) => {
+  //check token header
   if (
     req.headers.authorization &&
     req.headers.authorization.split(" ")[0] === "Bearer"
@@ -37,15 +38,16 @@ const extractToken = (req) => {//check token header
   return null;
 };
 
-const checkUserJWT = (req, res, next) => {//check login
+const checkUserJWT = (req, res, next) => {
+  //check login
   if (nonSecurePaths.includes(req.path)) return next();
-
-  let cookies = req.cookies; //khi guoi dung dang nhap thi req dc gui xuong day, can giai ma decoded, check permission va gui den controller
+  console.log("checknef", req.cookies);
+  let cookies = req.cookies; //khi user login or reload or click (fetchuserredux) thi req dc gui xuong day, can giai ma decoded, check permission va gui den controller
   const tokenFromHeader = extractToken(req);
 
   if ((cookies && cookies.jwt) || tokenFromHeader) {
     let token = cookies && cookies.jwt ? cookies.jwt : tokenFromHeader;
-    let decoded = verifyToken(token);//data và token của controller, được giải mã và sử dụng
+    let decoded = verifyToken(token); //data và token của controller, được giải mã và sử dụng
     if (decoded) {
       //ko co cookie -> ko co du lieu truyen xuong server -> logout
       req.user = decoded; // *** cos theer dinh kem them data gui den server controller
@@ -81,7 +83,9 @@ const checkUserPermission = (req, res, next) => {
         EM: "You don't have permission to access this resource...",
       });
     }
-    let canAccess = roles.some((item) => item.url === currentURL || currentURL.includes(item.url));
+    let canAccess = roles.some(
+      (item) => item.url === currentURL || currentURL.includes(item.url)
+    );
 
     if (canAccess === true) {
       next();
